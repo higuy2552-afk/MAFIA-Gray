@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE CHARACTER RECORD — กรีตา (#MC-7638)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cinzel', 'Noto Sans Thai', 'serif'],
+            sans: ['Noto Sans Thai', 'Inter', 'sans-serif'],
+            mono: ['Space Mono', 'monospace'],
+          },
+          colors: {
+            crimson: {
+              600: '#b91c1c',
+              700: '#991b1b',
+              800: '#7f1d1d',
+              900: '#450a0a',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Custom aesthetic styling matching the Canva design */
+    body {
+      font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+      background-color: #0b0b0d;
+      color: #18181b;
+      overflow-x: hidden;
+    }
+
+    .halftone-crimson {
+      background-image: radial-gradient(rgba(185, 28, 28, 0.34) 1.5px, transparent 1.5px);
+      background-size: 9px 9px;
+    }
+
+    .vertical-portrait-slot {
+      background: linear-gradient(180deg, #070709 0%, #141418 58%, #f4f4f5 100%);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .vertical-portrait-slot:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 32px -12px rgba(153, 27, 27, 0.35);
+      border-color: #b91c1c;
+    }
+
+    .vertical-label {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 0.14em;
+    }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 6px;
+      transition: background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    [contenteditable="true"]:hover {
+      background-color: rgba(185, 28, 28, 0.05);
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: rgba(185, 28, 28, 0.08);
+      box-shadow: inset 0 0 0 1.5px rgba(185, 28, 28, 0.45);
+    }
+
+    .dark-surface [contenteditable="true"]:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .dark-surface [contenteditable="true"]:focus {
+      background-color: rgba(185, 28, 28, 0.16);
+      box-shadow: inset 0 0 0 1.5px rgba(220, 38, 38, 0.65);
+    }
+
+    /* Hide scrollbar for horizontal slide pills on mobile while keeping scrollability */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-red-700 selection:text-white">
+
+  <!-- Top Presentation & Archive Control Bar -->
+  <header class="sticky top-0 z-40 bg-zinc-950/95 backdrop-blur border-b border-zinc-800 text-zinc-100">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-800/30 border border-red-700/60 text-red-400 font-mono text-sm font-bold shrink-0">
+          𖤐
+        </span>
+        <div class="truncate">
+          <div class="font-display text-xs sm:text-sm font-bold tracking-wider text-white truncate">
+            CONFIDENTIAL ARCHIVE <span class="text-red-500 font-mono">#MC-7638</span>
+          </div>
+          <div class="text-[11px] sm:text-xs text-zinc-400 truncate">
+            THE CHARACTER RECORD — <span class="text-zinc-200 font-medium">กรีตา</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <span id="saveStatusBadge" class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-zinc-900 text-zinc-300 border border-zinc-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          SAVED
+        </span>
+
+        <button
+          id="exportJsonBtn"
+          type="button"
+          class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-zinc-800 hover:bg-zinc-700 active:scale-95 text-zinc-100 border border-zinc-700 transition cursor-pointer"
+        >
+          ส่งออกข้อมูล
+        </button>
+
+        <button
+          id="resetDataBtn"
+          type="button"
+          class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-red-950/70 hover:bg-red-900 active:scale-95 text-red-200 border border-red-800/70 transition cursor-pointer"
+        >
+          รีเซ็ตค่าเริ่มต้น
+        </button>
+      </div>
+    </div>
+
+    <!-- Slide / Section Navigator -->
+    <nav aria-label="Slide Navigation" class="bg-zinc-900/90 border-t border-zinc-800/80">
+      <div id="slideNavContainer" class="max-w-7xl mx-auto px-3 sm:px-6 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </nav>
+  </header>
+
+  <!-- Toast / Message Box (replaces alert/confirm) -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 max-w-sm w-[calc(100%-2.5rem)] sm:w-auto hidden">
+    <div class="bg-zinc-900 text-white border border-red-700/70 shadow-2xl rounded-xl px-4 py-3 flex items-center justify-between gap-3">
+      <p id="toastMessage" class="text-xs sm:text-sm text-zinc-100"></p>
+      <button id="toastCloseBtn" type="button" class="text-zinc-400 hover:text-white text-xs font-mono px-1.5 py-0.5 rounded cursor-pointer">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <!-- Confirm Modal for Reset (replaces confirm()) -->
+  <div id="resetModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full p-5 sm:p-6 text-zinc-100 shadow-2xl">
+      <h3 class="font-display text-lg font-bold text-red-400 mb-2">ยืนยันการรีเซ็ตแฟ้มข้อมูล</h3>
+      <p class="text-sm text-zinc-300 leading-relaxed mb-5">
+        ต้องการล้างข้อความที่แก้ไข รูปภาพตัวละครทั้ง 4 ช่อง และสถานะเช็กลิสต์ กลับเป็นค่าเริ่มต้นของแฟ้ม <span class="font-mono text-white">#MC-7638</span> หรือไม่?
+      </p>
+      <div class="flex items-center justify-end gap-2.5">
+        <button id="cancelResetBtn" type="button" class="px-4 py-2 rounded-xl text-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition cursor-pointer">
+          ยกเลิก
+        </button>
+        <button id="confirmResetBtn" type="button" class="px-4 py-2 rounded-xl text-sm bg-red-700 hover:bg-red-600 text-white font-semibold transition cursor-pointer">
+          ยืนยันรีเซ็ต
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Presentation Stage -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-8 flex flex-col justify-between gap-6">
+
+    <!-- Slide Viewport Card -->
+    <section id="slideStage" class="w-full rounded-3xl overflow-hidden shadow-2xl border border-zinc-800/90 bg-white transition-all duration-300">
+      <!-- Dynamic Slide Content Injected Here -->
+    </section>
+
+    <!-- Bottom Slide Controls -->
+    <footer class="flex flex-wrap items-center justify-between gap-3 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-4 py-3 text-zinc-200">
+      <button
+        id="prevSlideBtn"
+        type="button"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-zinc-800 hover:bg-zinc-700 disabled:opacity-40 disabled:pointer-events-none active:scale-95 transition cursor-pointer"
+      >
+        <span>←</span>
+        <span>สไลด์ก่อนหน้า</span>
+      </button>
+
+      <div class="text-center">
+        <div id="slideCounterText" class="font-mono text-xs sm:text-sm font-bold text-red-400">
+          SLIDE 01 / 07
+        </div>
+        <div class="text-[11px] sm:text-xs text-zinc-400">
+          คลิกที่ข้อความเพื่อแก้ไขทันที • ข้อมูลบันทึกอัตโนมัติ
+        </div>
+      </div>
+
+      <button
+        id="nextSlideBtn"
+        type="button"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-red-700 hover:bg-red-600 disabled:opacity-40 disabled:pointer-events-none text-white font-semibold active:scale-95 transition cursor-pointer"
+      >
+        <span>สไลด์ถัดไป</span>
+        <span>→</span>
+      </button>
+    </footer>
+
+  </main>
+
+  <!-- Hidden File Input for Uploading Portrait Images -->
+  <input id="portraitFileInput" type="file" accept="image/*" class="hidden" />
+
+  <script>
+    /**
+     * Character Record & Presentation App for กรีตา (#MC-7638)
+     * - Matches user's Canva design: 4 vertical black-and-white gradient slots ("ใส่รูปตัวละคร"),
+     *   dark crimson/blood-red accents, spiky/halftone eye emblem motif, light & dark contrast.
+     * - Supports interactive inline editing, portrait uploads/previews, project status toggles,
+     *   slide navigation (click/touch/keyboard), and localStorage persistence.
+     */
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'GRETA_CHARACTER_ARCHIVE_MC7638_V1';
+
+      const DEFAULT_STATE = {
+        currentSlide: 0,
+        headerMeta: {
+          archiveTag: '𓆩 CONFIDENTIAL ARCHIVE 𓆪',
+          recordTitle: 'THE CHARACTER RECORD',
+          fileNo: '#MC-7638',
+          characterName: 'กรีตา',
+          alias: '',
+          status: '',
+          tagline: '「 A PERSON BEHIND THE NAME 」',
+        },
+        portraits: [null, null, null, null],
+        sections: {
+          '01. IDENTITY': {
+            'Full Name': '',
+            'Nickname': '',
+            'Age': '',
+            'Date of Birth': '',
+            'Place of Birth': '',
+            'Nationality': '',
+            'Languages': '',
+            'Current Residence': '',
+            'Occupation': '',
+            'Affiliation': '',
+          },
+          '02. PHYSICAL DESCRIPTION': {
+            'Height': '',
+            'Weight (optional)': '',
+            'Body Type': '',
+            'Hair': '',
+            'Eyes': '',
+            'Facial Features': '',
+            'Voice': '',
+            'Clothing': '',
+            'Accessories': '',
+            'Distinguishing Features': '',
+          },
+          '03. EDUCATION': {
+            'Elementary School': '',
+            'Secondary School': '',
+            'University': '',
+            'Major': '',
+            'Academic Strengths': '',
+            'Skills': '',
+            'Languages Learned': '',
+          },
+          '04. PERSONALITY': {
+            'Core Personality': '',
+            'Strengths': '',
+            'Weaknesses': '',
+            'Temperament': '',
+            'Social Behavior': '',
+            'Emotional Control': '',
+            'Communication Style': '',
+            'Leadership Style': '',
+            'Habits': '',
+            'Values': '',
+          },
+          '05. PERSONAL PREFERENCES': {
+            'Favorite Food': '',
+            'Favorite Drink': '',
+            'Favorite Music': '',
+            'Favorite Film': '',
+            'Favorite Book': '',
+            'Favorite Color': '',
+            'Favorite Place': '',
+            'Favorite Season': '',
+            'Favorite Hobby': '',
+            'Favorite Fragrance': '',
+            'Favorite Clothing': '',
+            'Favorite Activities': '',
+          },
+          '06. DAILY ROUTINE': {
+            'Morning': '',
+            'Afternoon': '',
+            'Evening': '',
+            'Night': '',
+            'Work': '',
+            'Leisure': '',
+            'Sleep': '',
+          },
+          '07. FAMILY & RELATIONSHIPS': {
+            'Family Background': '',
+            'Parents': '',
+            'Siblings': '',
+            'Childhood Friends': '',
+            'Closest Person': '',
+            'Important Relationships': '',
+            'Relationship History': '',
+          },
+          '08. PSYCHOLOGICAL PROFILE': {
+            'Greatest Fear': '',
+            'Deepest Desire': '',
+            'Biggest Regret': '',
+            'Personal Insecurity': '',
+            'Internal Conflict': '',
+            'Moral Principles': '',
+            'What Makes Him Feel Safe': '',
+            'What He Hides': '',
+            'What He Never Talks About': '',
+          },
+          '09. LIFE HISTORY': {
+            'Childhood': '',
+            'Adolescence': '',
+            'Education': '',
+            'Early Adulthood': '',
+            'Turning Point': '',
+            'Major Life Events': '',
+            'Present Life': '',
+          },
+          '10. MOTIVATION': {
+            'Main Goal': '',
+            'Personal Ambition': '',
+            'What He Wants': '',
+            'What He Needs': '',
+            'What He Fears Losing': '',
+            'What He Refuses to Abandon': '',
+          },
+          '11. CURRENT STORY': {
+            'Current Situation': '',
+            'Current Problems': '',
+            'Current Relationships': '',
+            'Current Responsibilities': '',
+            'Current Secrets': '',
+            'Future Plans': '',
+          },
+        },
+        biographyChapters: [
+          { roman: 'I.', title: 'Before Everything', note: '' },
+          { roman: 'II.', title: 'The House He Grew Up In', note: '' },
+          { roman: 'III.', title: 'The Boy He Used to Be', note: '' },
+          { roman: 'IV.', title: 'Education & Formation', note: '' },
+          { roman: 'V.', title: 'The Turning Point', note: '' },
+          { roman: 'VI.', title: 'Entering the World', note: '' },
+          { roman: 'VII.', title: 'The Man Behind the Name', note: '' },
+          { roman: 'VIII.', title: 'His Present Life', note: '' },
+          { roman: 'IX.', title: 'The Things He Never Says', note: '' },
+          { roman: 'X.', title: 'What Comes Next', note: '' },
+        ],
+        languageRecord: {
+          newVocabulary: '',
+          usefulExpressions: '',
+          sentencesUnderstand: '',
+          sentencesRewrite: '',
+          englishSummary: '',
+          speakingPractice: '',
+        },
+        projectStatus: [
+          { id: 'char_gen', label: 'Character Generated', done: true },
+          { id: 'vis_ref', label: 'Visual Reference Created', done: false },
+          { id: 'pers_file', label: 'Personal File Completed', done: false },
+          { id: 'bio_comp', label: 'Biography Completed', done: false },
+          { id: 'vocab_rev', label: 'Vocabulary Reviewed', done: false },
+          { id: 'eng_sum', label: 'English Summary Written', done: false },
+          { id: 'speak_prac', label: 'Speaking Practice Completed', done: false },
+        ],
+      };
+
+      const SLIDES = [
+        { id: 'cover', shortLabel: '00. หน้าปก / แฟ้มหลัก' },
+        { id: 'identity_phys', shortLabel: '01–02. อัตลักษณ์ & กายภาพ' },
+        { id: 'edu_pers', shortLabel: '03–04. การศึกษา & บุคลิกภาพ' },
+        { id: 'pref_routine', shortLabel: '05–06. ความชอบ & กิจวัตร' },
+        { id: 'fam_psych', shortLabel: '07–08. ครอบครัว & จิตวิทยา' },
+        { id: 'hist_mot_story', shortLabel: '09–11. ประวัติ & แรงจูงใจ' },
+        { id: 'bio_lang_status', shortLabel: '12. บทชีวประวัติ & สถานะ' },
+      ];
+
+      let state = loadState();
+      let activeUploadSlotIndex = null;
+      let toastTimer = null;
+
+      // DOM References
+      const slideStage = document.getElementById('slideStage');
+      const slideNavContainer = document.getElementById('slideNavContainer');
+      const prevSlideBtn = document.getElementById('prevSlideBtn');
+      const nextSlideBtn = document.getElementById('nextSlideBtn');
+      const slideCounterText = document.getElementById('slideCounterText');
+      const portraitFileInput = document.getElementById('portraitFileInput');
+      const saveStatusBadge = document.getElementById('saveStatusBadge');
+      const exportJsonBtn = document.getElementById('exportJsonBtn');
+      const resetDataBtn = document.getElementById('resetDataBtn');
+      const resetModal = document.getElementById('resetModal');
+      const cancelResetBtn = document.getElementById('cancelResetBtn');
+      const confirmResetBtn = document.getElementById('confirmResetBtn');
+      const toastBanner = document.getElementById('toastBanner');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastCloseBtn = document.getElementById('toastCloseBtn');
+
+      function deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return deepClone(DEFAULT_STATE);
+          const parsed = JSON.parse(raw);
+          return {
+            ...deepClone(DEFAULT_STATE),
+            ...parsed,
+            headerMeta: { ...deepClone(DEFAULT_STATE.headerMeta), ...(parsed.headerMeta || {}) },
+            portraits: Array.isArray(parsed.portraits) && parsed.portraits.length === 4 ? parsed.portraits : [null, null, null, null],
+            sections: mergeSections(deepClone(DEFAULT_STATE.sections), parsed.sections || {}),
+            biographyChapters: Array.isArray(parsed.biographyChapters) && parsed.biographyChapters.length === 10
+              ? parsed.biographyChapters
+              : deepClone(DEFAULT_STATE.biographyChapters),
+            languageRecord: { ...deepClone(DEFAULT_STATE.languageRecord), ...(parsed.languageRecord || {}) },
+            projectStatus: Array.isArray(parsed.projectStatus) && parsed.projectStatus.length === 7
+              ? parsed.projectStatus
+              : deepClone(DEFAULT_STATE.projectStatus),
+          };
+        } catch (err) {
+          console.error('Failed to load state from localStorage:', err);
+          return deepClone(DEFAULT_STATE);
+        }
+      }
+
+      function mergeSections(defaults, saved) {
+        const result = {};
+        Object.keys(defaults).forEach((secKey) => {
+          result[secKey] = {
+            ...defaults[secKey],
+            ...(saved[secKey] || {}),
+          };
+        });
+        return result;
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          if (saveStatusBadge) {
+            saveStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span>SAVED`;
+          }
+        } catch (err) {
+          console.warn('Storage quota or error:', err);
+          showToast('หมายเหตุ: รูปภาพขนาดใหญ่เกินพื้นที่เก็บในเบราว์เซอร์ อาจไม่ถูกบันทึกถาวรหลังรีเฟรช');
+        }
+      }
+
+      function showToast(msg) {
+        toastMessage.textContent = msg;
+        toastBanner.classList.remove('hidden');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastBanner.classList.add('hidden');
+        }, 3600);
+      }
+
+      function escapeHtml(str) {
+        if (typeof str !== 'string') return '';
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // Spiky crimson eye emblem SVG matching the Canva 2nd page motif
+      function eyeEmblemSvg(className = 'w-14 h-14') {
+        return `
+          <svg viewBox="0 0 120 120" class="${className}" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M60 6 L66 34 L94 18 L76 44 L108 46 L78 58 L104 80 L72 70 L82 102 L60 76 L38 102 L48 70 L16 80 L42 58 L12 46 L44 44 L26 18 L54 34 Z" fill="#991b1b" />
+            <path d="M18 60 Q60 26 102 60 Q60 94 18 60 Z" fill="#09090b" stroke="#dc2626" stroke-width="3" />
+            <circle cx="60" cy="60" r="14" fill="#dc2626" />
+            <circle cx="60" cy="60" r="6" fill="#09090b" />
+            <circle cx="55" cy="55" r="2.5" fill="#ffffff" />
+          </svg>
+        `;
+      }
+
+      function sectionDividerHtml(title) {
+        return `
+          <div class="flex items-center gap-2 sm:gap-3 font-mono text-xs sm:text-sm font-bold tracking-wider text-red-700 mb-3 select-none">
+            <span class="hidden sm:inline text-zinc-400">━━━━━━━━━━━</span>
+            <span class="text-red-600">𖤐</span>
+            <span class="uppercase">${escapeHtml(title)}</span>
+            <span class="text-red-600">𖤐</span>
+            <span class="hidden sm:inline text-zinc-400 flex-1 truncate">━━━━━━━━━━━</span>
+          </div>
+        `;
+      }
+
+      function fieldRowHtml(sectionKey, fieldKey, value, placeholder = 'กรอกข้อมูล...') {
+        return `
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2 py-1.5 border-b border-zinc-200/80 last:border-b-0">
+            <span class="font-mono text-xs sm:text-sm font-semibold text-zinc-800 shrink-0">
+              ⌞ ${escapeHtml(fieldKey)} :
+            </span>
+            <div
+              contenteditable="true"
+              data-bind-section="${escapeHtml(sectionKey)}"
+              data-bind-field="${escapeHtml(fieldKey)}"
+              data-placeholder="${escapeHtml(placeholder)}"
+              class="flex-1 min-h-[1.5rem] text-sm sm:text-base text-zinc-900 font-medium px-1.5 py-0.5 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-400 empty:before:font-normal"
+            >${escapeHtml(value)}</div>
+          </div>
+        `;
+      }
+
+      function renderNav() {
+        slideNavContainer.innerHTML = SLIDES.map((s, idx) => {
+          const active = idx === state.currentSlide;
+          return `
+            <button
+              type="button"
+              data-goto-slide="${idx}"
+              class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition cursor-pointer ${
+                active
+                  ? 'bg-red-700 text-white shadow-sm font-semibold'
+                  : 'bg-zinc-800/80 text-zinc-300 hover:bg-zinc-700 hover:text-white'
+              }"
+            >
+              ${escapeHtml(s.shortLabel)}
+            </button>
+          `;
+        }).join('');
+      }
+
+      // SLIDE 0: Cover replicating the Canva 4 vertical black-and-white gradient bars + crimson/archive aesthetic
+      function renderCoverSlide() {
+        const m = state.headerMeta;
+        const slotsHtml = state.portraits.map((imgSrc, i) => {
+          return `
+            <div class="group relative flex flex-col gap-2">
+              <div
+                role="button"
+                tabindex="0"
+                data-upload-slot="${i}"
+                aria-label="อัปโหลดรูปตัวละครช่องที่ ${i + 1}"
+                class="vertical-portrait-slot relative h-64 sm:h-80 lg:h-[360px] w-full rounded-xl border-2 border-zinc-900 overflow-hidden flex flex-col items-center justify-between py-4 px-2 cursor-pointer"
+              >
+                ${
+                  imgSrc
+                    ? `<img src="${imgSrc}" alt="รูปตัวละคร กรีตา ช่องที่ ${i + 1}" class="absolute inset-0 w-full h-full object-cover object-top" onerror="this.style.display='none'" />
+                       <div class="relative z-10 mt-auto w-full bg-black/75 text-white text-[11px] font-mono text-center py-1 rounded backdrop-blur-xs opacity-0 group-hover:opacity-100 transition">
+                         เปลี่ยนรูป #${i + 1}
+                       </div>`
+                    : `<span class="text-red-500/80 text-lg font-mono">𖤐</span>
+                       <span class="vertical-label text-red-600 font-bold text-base sm:text-xl lg:text-2xl select-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+                         ใส่รูปตัวละคร
+                       </span>
+                       <span class="text-[11px] font-mono text-zinc-700 bg-white/85 px-2 py-0.5 rounded font-semibold">
+                         SLOT 0${i + 1}
+                       </span>`
+                }
+              </div>
+              ${
+                imgSrc
+                  ? `<button type="button" data-clear-slot="${i}" class="text-[11px] font-mono text-red-700 hover:text-red-900 underline self-center cursor-pointer">
+                       ลบรูปช่องที่ ${i + 1}
+                     </button>`
+                  : `<span class="text-[11px] font-mono text-zinc-500 text-center">คลิกเพื่อใส่รูป</span>`
+              }
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="relative bg-white p-4 sm:p-8 lg:p-10">
+            <!-- Top-left crimson halftone accent like Canva slide 2 -->
+            <div class="pointer-events-none absolute top-0 left-0 w-44 h-44 halftone-crimson opacity-80"></div>
+            <div class="pointer-events-none absolute top-3 left-3 opacity-85 hidden sm:block">
+              ${eyeEmblemSvg('w-16 h-16')}
+            </div>
+
+            <!-- Confidential Header Box -->
+            <div class="relative z-10 max-w-4xl mx-auto text-center mb-6 sm:mb-8">
+              <div class="inline-block border-2 border-zinc-900 rounded-xl px-4 sm:px-8 py-3 bg-zinc-50/90 shadow-xs">
+                <div
+                  contenteditable="true"
+                  data-bind-meta="archiveTag"
+                  class="font-mono text-xs sm:text-sm font-bold tracking-[0.2em] text-red-700 mb-1"
+                >${escapeHtml(m.archiveTag)}</div>
+                <h1
+                  contenteditable="true"
+                  data-bind-meta="recordTitle"
+                  class="font-display text-2xl sm:text-4xl font-black tracking-wider text-zinc-950"
+                >${escapeHtml(m.recordTitle)}</h1>
+              </div>
+
+              <!-- 4 Vertical Character Portrait Columns (Canva Layout) -->
+              <div class="mt-6 sm:mt-8">
+                <div class="font-display text-xl sm:text-3xl font-black tracking-[0.22em] text-red-800 mb-3 sm:mb-4">
+                  CHARACTER
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 max-w-5xl mx-auto">
+                  ${slotsHtml}
+                </div>
+              </div>
+
+              <!-- Key Record Meta Fields -->
+              <div class="mt-6 sm:mt-8 bg-zinc-950 text-zinc-100 rounded-2xl p-4 sm:p-5 border border-red-900/60 text-left grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-baseline gap-2">
+                  <span class="font-mono text-xs sm:text-sm text-red-400 font-bold shrink-0">⌞ FILE NO. :</span>
+                  <span
+                    contenteditable="true"
+                    data-bind-meta="fileNo"
+                    class="font-mono text-sm sm:text-base font-bold text-white flex-1 px-1"
+                  >${escapeHtml(m.fileNo)}</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span class="font-mono text-xs sm:text-sm text-red-400 font-bold shrink-0">⌞ CHARACTER NAME :</span>
+                  <span
+                    contenteditable="true"
+                    data-bind-meta="characterName"
+                    class="text-sm sm:text-base font-bold text-white flex-1 px-1"
+                  >${escapeHtml(m.characterName)}</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span class="font-mono text-xs sm:text-sm text-red-400 font-bold shrink-0">⌞ ALIAS :</span>
+                  <span
+                    contenteditable="true"
+                    data-bind-meta="alias"
+                    data-placeholder="ระบุฉายา..."
+                    class="text-sm sm:text-base text-zinc-100 flex-1 px-1 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                  >${escapeHtml(m.alias)}</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span class="font-mono text-xs sm:text-sm text-red-400 font-bold shrink-0">⌞ STATUS :</span>
+                  <span
+                    contenteditable="true"
+                    data-bind-meta="status"
+                    data-placeholder="ระบุสถานะ..."
+                    class="text-sm sm:text-base text-zinc-100 flex-1 px-1 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                  >${escapeHtml(m.status)}</span>
+                </div>
+              </div>
+
+              <div
+                contenteditable="true"
+                data-bind-meta="tagline"
+                class="mt-5 font-display text-sm sm:text-lg tracking-[0.18em] text-zinc-800 font-semibold"
+              >${escapeHtml(m.tagline)}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SLIDE 1: 01. IDENTITY & 02. PHYSICAL DESCRIPTION
+      function renderIdentityAndPhysicalSlide() {
+        const idFields = Object.keys(state.sections['01. IDENTITY']);
+        const physFields = Object.keys(state.sections['02. PHYSICAL DESCRIPTION']);
+
+        return `
+          <div class="relative bg-white p-4 sm:p-8 lg:p-10">
+            <div class="pointer-events-none absolute top-0 right-0 w-40 h-40 halftone-crimson opacity-70"></div>
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              <div class="bg-zinc-50/90 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+                ${sectionDividerHtml('01. IDENTITY')}
+                <div class="space-y-0.5">
+                  ${idFields.map((k) => fieldRowHtml('01. IDENTITY', k, state.sections['01. IDENTITY'][k])).join('')}
+                </div>
+              </div>
+
+              <div class="bg-zinc-50/90 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+                ${sectionDividerHtml('02. PHYSICAL DESCRIPTION')}
+                <div class="space-y-0.5">
+                  ${physFields.map((k) => fieldRowHtml('02. PHYSICAL DESCRIPTION', k, state.sections['02. PHYSICAL DESCRIPTION'][k])).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SLIDE 2: 03. EDUCATION & 04. PERSONALITY
+      function renderEducationAndPersonalitySlide() {
+        const eduFields = Object.keys(state.sections['03. EDUCATION']);
+        const persFields = Object.keys(state.sections['04. PERSONALITY']);
+
+        return `
+          <div class="bg-white p-4 sm:p-8 lg:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+              <div class="lg:col-span-5 bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6 h-fit">
+                ${sectionDividerHtml('03. EDUCATION')}
+                <div class="space-y-0.5">
+                  ${eduFields.map((k) => fieldRowHtml('03. EDUCATION', k, state.sections['03. EDUCATION'][k])).join('')}
+                </div>
+              </div>
+
+              <div class="lg:col-span-7 bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+                ${sectionDividerHtml('04. PERSONALITY')}
+                <div class="space-y-0.5">
+                  ${persFields.map((k) => fieldRowHtml('04. PERSONALITY', k, state.sections['04. PERSONALITY'][k])).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SLIDE 3: 05. PERSONAL PREFERENCES & 06. DAILY ROUTINE
+      function renderPreferencesAndRoutineSlide() {
+        const prefFields = Object.keys(state.sections['05. PERSONAL PREFERENCES']);
+        const routineFields = Object.keys(state.sections['06. DAILY ROUTINE']);
+
+        return `
+          <div class="bg-white p-4 sm:p-8 lg:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+                ${sectionDividerHtml('05. PERSONAL PREFERENCES')}
+                <div class="space-y-0.5">
+                  ${prefFields.map((k) => fieldRowHtml('05. PERSONAL PREFERENCES', k, state.sections['05. PERSONAL PREFERENCES'][k])).join('')}
+                </div>
+              </div>
+
+              <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6 h-fit">
+                ${sectionDividerHtml('06. DAILY ROUTINE')}
+                <div class="space-y-0.5">
+                  ${routineFields.map((k) => fieldRowHtml('06. DAILY ROUTINE', k, state.sections['06. DAILY ROUTINE'][k])).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SLIDE 4: 07. FAMILY & RELATIONSHIPS & 08. PSYCHOLOGICAL PROFILE
+      function renderFamilyAndPsychSlide() {
+        const famFields = Object.keys(state.sections['07. FAMILY & RELATIONSHIPS']);
+        const psychFields = Object.keys(state.sections['08. PSYCHOLOGICAL PROFILE']);
+
+        return `
+          <div class="bg-white p-4 sm:p-8 lg:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6 h-fit">
+                ${sectionDividerHtml('07. FAMILY & RELATIONSHIPS')}
+                <div class="space-y-0.5">
+                  ${famFields.map((k) => fieldRowHtml('07. FAMILY & RELATIONSHIPS', k, state.sections['07. FAMILY & RELATIONSHIPS'][k])).join('')}
+                </div>
+              </div>
+
+              <div class="dark-surface bg-zinc-950 text-zinc-100 border border-red-900/60 rounded-2xl p-4 sm:p-6">
+                <div class="flex items-center gap-2 sm:gap-3 font-mono text-xs sm:text-sm font-bold tracking-wider text-red-400 mb-3 select-none">
+                  <span class="text-red-500">𖤐</span>
+                  <span>08. PSYCHOLOGICAL PROFILE</span>
+                  <span class="text-red-500">𖤐</span>
+                </div>
+                <div class="space-y-1">
+                  ${psychFields.map((k) => `
+                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2 py-1.5 border-b border-zinc-800 last:border-b-0">
+                      <span class="font-mono text-xs sm:text-sm font-semibold text-red-300 shrink-0">⌞ ${escapeHtml(k)} :</span>
+                      <div
+                        contenteditable="true"
+                        data-bind-section="08. PSYCHOLOGICAL PROFILE"
+                        data-bind-field="${escapeHtml(k)}"
+                        data-placeholder="กรอกข้อมูล..."
+                        class="flex-1 min-h-[1.5rem] text-sm sm:text-base text-zinc-100 px-1.5 py-0.5 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                      >${escapeHtml(state.sections['08. PSYCHOLOGICAL PROFILE'][k])}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SLIDE 5: 09. LIFE HISTORY, 10. MOTIVATION & 11. CURRENT STORY
+      function renderHistoryMotivationStorySlide() {
+        const histFields = Object.keys(state.sections['09. LIFE HISTORY']);
+        const motFields = Object.keys(state.sections['10. MOTIVATION']);
+        const storyFields = Object.keys(state.sections['11. CURRENT STORY']);
+
+        return `
+          <div class="bg-white p-4 sm:p-8 lg:p-10 space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+                ${sectionDividerHtml('09. LIFE HISTORY')}
+                <div class="space-y-0.5">
+                  ${histFields.map((k) => fieldRowHtml('09. LIFE HISTORY', k, state.sections['09. LIFE HISTORY'][k])).join('')}
+                </div>
+              </div>
+
+              <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6 h-fit">
+                ${sectionDividerHtml('10. MOTIVATION')}
+                <div class="space-y-0.5">
+                  ${motFields.map((k) => fieldRowHtml('10. MOTIVATION', k, state.sections['10. MOTIVATION'][k])).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+              ${sectionDividerHtml('11. CURRENT STORY')}
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                ${storyFields.map((k) => fieldRowHtml('11. CURRENT STORY', k, state.sections['11. CURRENT STORY'][k])).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SLIDE 6: 12. BIOGRAPHY CHAPTERS, LANGUAGE RECORD & PROJECT STATUS
+      function renderBioLangStatusSlide() {
+        const lr = state.languageRecord;
+
+        const chaptersHtml = state.biographyChapters.map((ch, idx) => `
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-3 py-1.5 border-b border-zinc-200 last:border-b-0">
+            <div class="font-display text-sm sm:text-base font-bold text-zinc-900 shrink-0">
+              <span class="text-red-700 font-mono mr-1">${escapeHtml(ch.roman)}</span>
+              <span>${escapeHtml(ch.title)}</span>
+            </div>
+            <div
+              contenteditable="true"
+              data-bind-bio="${idx}"
+              data-placeholder="บันทึกเนื้อหาบทนี้..."
+              class="flex-1 sm:text-right min-h-[1.4rem] text-xs sm:text-sm text-zinc-700 px-1.5 py-0.5 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-400"
+            >${escapeHtml(ch.note)}</div>
+          </div>
+        `).join('');
+
+        const statusHtml = state.projectStatus.map((item, idx) => `
+          <label class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-zinc-900/90 transition cursor-pointer select-none">
+            <input
+              type="checkbox"
+              data-status-idx="${idx}"
+              ${item.done ? 'checked' : ''}
+              class="w-4 h-4 accent-red-600 rounded cursor-pointer"
+            />
+            <span class="font-mono text-xs sm:text-sm ${item.done ? 'text-emerald-300 line-through decoration-red-500/70' : 'text-zinc-200'}">
+              [${item.done ? '✓' : ' '}] ${escapeHtml(item.label)}
+            </span>
+          </label>
+        `).join('');
+
+        return `
+          <div class="bg-white p-4 sm:p-8 lg:p-10 space-y-6">
+            <!-- 12. BIOGRAPHY CHAPTERS -->
+            <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 sm:p-6">
+              ${sectionDividerHtml('12. BIOGRAPHY CHAPTERS')}
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                ${chaptersHtml}
+              </div>
+            </div>
+
+            <!-- LANGUAGE RECORD & PROJECT STATUS -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div class="dark-surface lg:col-span-7 bg-zinc-950 text-zinc-100 rounded-2xl p-4 sm:p-6 border border-zinc-800">
+                <div class="font-mono text-xs sm:text-sm font-bold text-red-400 tracking-wider mb-3">
+                  ╭────────── · · 𖤐 · · ──────────╮<br />
+                  LANGUAGE RECORD<br />
+                  ╰────────── · · 𖤐 · · ──────────╯
+                </div>
+
+                <div class="space-y-3 text-sm">
+                  <div>
+                    <div class="font-mono text-xs text-red-300 font-bold mb-1">✧ NEW VOCABULARY</div>
+                    <div
+                      contenteditable="true"
+                      data-bind-lang="newVocabulary"
+                      data-placeholder="- พิมพ์คำศัพท์ใหม่..."
+                      class="min-h-[2.2rem] bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 whitespace-pre-line empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                    >${escapeHtml(lr.newVocabulary)}</div>
+                  </div>
+
+                  <div>
+                    <div class="font-mono text-xs text-red-300 font-bold mb-1">✧ USEFUL EXPRESSIONS</div>
+                    <div
+                      contenteditable="true"
+                      data-bind-lang="usefulExpressions"
+                      data-placeholder="- พิมพ์สำนวนที่ใช้ได้จริง..."
+                      class="min-h-[2.2rem] bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 whitespace-pre-line empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                    >${escapeHtml(lr.usefulExpressions)}</div>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <div class="font-mono text-xs text-red-300 font-bold mb-1">✧ SENTENCES I UNDERSTAND</div>
+                      <div
+                        contenteditable="true"
+                        data-bind-lang="sentencesUnderstand"
+                        data-placeholder="- ประโยคที่เข้าใจ..."
+                        class="min-h-[2.4rem] bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 whitespace-pre-line empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                      >${escapeHtml(lr.sentencesUnderstand)}</div>
+                    </div>
+                    <div>
+                      <div class="font-mono text-xs text-red-300 font-bold mb-1">✧ SENTENCES I CAN REWRITE</div>
+                      <div
+                        contenteditable="true"
+                        data-bind-lang="sentencesRewrite"
+                        data-placeholder="- ประโยคที่เขียนใหม่ได้..."
+                        class="min-h-[2.4rem] bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 whitespace-pre-line empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                      >${escapeHtml(lr.sentencesRewrite)}</div>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <div class="font-mono text-xs text-red-300 font-bold mb-1">✧ MY ENGLISH SUMMARY</div>
+                      <div
+                        contenteditable="true"
+                        data-bind-lang="englishSummary"
+                        data-placeholder="Write your English summary..."
+                        class="min-h-[2.6rem] bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 whitespace-pre-line empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                      >${escapeHtml(lr.englishSummary)}</div>
+                    </div>
+                    <div>
+                      <div class="font-mono text-xs text-red-300 font-bold mb-1">✧ MY SPEAKING PRACTICE</div>
+                      <div
+                        contenteditable="true"
+                        data-bind-lang="speakingPractice"
+                        data-placeholder="Notes from speaking practice..."
+                        class="min-h-[2.6rem] bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 whitespace-pre-line empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500"
+                      >${escapeHtml(lr.speakingPractice)}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PROJECT STATUS -->
+              <div class="lg:col-span-5 bg-zinc-950 text-zinc-100 rounded-2xl p-4 sm:p-6 border border-red-900/60 flex flex-col justify-between">
+                <div>
+                  <div class="border border-zinc-700 rounded-xl px-4 py-2.5 text-center mb-4 bg-zinc-900/70">
+                    <div class="font-mono text-xs sm:text-sm font-bold tracking-widest text-red-400">
+                      ╔════════════════════════════╗<br />
+                      PROJECT STATUS<br />
+                      ╚════════════════════════════╝
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    ${statusHtml}
+                  </div>
+                </div>
+
+                <div class="mt-5 pt-3 border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+                  <span>FILE: #MC-7638</span>
+                  <span id="statusProgressText" class="text-red-400 font-bold">
+                    ${state.projectStatus.filter((x) => x.done).length} / ${state.projectStatus.length} COMPLETED
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderSlide() {
+        const idx = state.currentSlide;
+        let html = '';
+
+        switch (idx) {
+          case 0:
+            html = renderCoverSlide();
+            break;
+          case 1:
+            html = renderIdentityAndPhysicalSlide();
+            break;
+          case 2:
+            html = renderEducationAndPersonalitySlide();
+            break;
+          case 3:
+            html = renderPreferencesAndRoutineSlide();
+            break;
+          case 4:
+            html = renderFamilyAndPsychSlide();
+            break;
+          case 5:
+            html = renderHistoryMotivationStorySlide();
+            break;
+          case 6:
+          default:
+            html = renderBioLangStatusSlide();
+            break;
+        }
+
+        slideStage.innerHTML = html;
+        renderNav();
+
+        prevSlideBtn.disabled = idx === 0;
+        nextSlideBtn.disabled = idx === SLIDES.length - 1;
+        slideCounterText.textContent = `SLIDE ${String(idx + 1).padStart(2, '0')} / ${String(SLIDES.length).padStart(2, '0')}`;
+      }
+
+      function goToSlide(index) {
+        const clamped = Math.max(0, Math.min(SLIDES.length - 1, index));
+        state.currentSlide = clamped;
+        saveState();
+        renderSlide();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Event Delegation for Slide Stage Interactions
+      slideStage.addEventListener('click', (e) => {
+        const uploadEl = e.target.closest('[data-upload-slot]');
+        if (uploadEl) {
+          const slotIdx = Number(uploadEl.getAttribute('data-upload-slot'));
+          if (!Number.isNaN(slotIdx)) {
+            activeUploadSlotIndex = slotIdx;
+            portraitFileInput.value = '';
+            portraitFileInput.click();
+          }
+          return;
+        }
+
+        const clearEl = e.target.closest('[data-clear-slot]');
+        if (clearEl) {
+          const slotIdx = Number(clearEl.getAttribute('data-clear-slot'));
+          if (!Number.isNaN(slotIdx) && state.portraits[slotIdx]) {
+            state.portraits[slotIdx] = null;
+            saveState();
+            renderSlide();
+            showToast(`ลบรูปตัวละครในช่องที่ ${slotIdx + 1} แล้ว`);
+          }
+        }
+      });
+
+      slideStage.addEventListener('keydown', (e) => {
+        const uploadEl = e.target.closest('[data-upload-slot]');
+        if (uploadEl && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          uploadEl.click();
+        }
+      });
+
+      // Handle Image File Upload & Preview
+      portraitFileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file || activeUploadSlotIndex === null) return;
+
+        if (!file.type.startsWith('image/')) {
+          showToast('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            // Compress slightly onto canvas so localStorage stays fast and clean
+            const maxDim = 900;
+            let { width, height } = img;
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            state.portraits[activeUploadSlotIndex] = dataUrl;
+            saveState();
+            renderSlide();
+            showToast(`อัปโหลดรูปตัวละครลงช่องที่ ${activeUploadSlotIndex + 1} เรียบร้อยแล้ว`);
+            activeUploadSlotIndex = null;
+          };
+          img.onerror = () => {
+            state.portraits[activeUploadSlotIndex] = reader.result;
+            saveState();
+            renderSlide();
+            activeUploadSlotIndex = null;
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Sync Inline Editable Fields to State
+      slideStage.addEventListener('input', (e) => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+
+        if (target.hasAttribute('data-bind-meta')) {
+          const key = target.getAttribute('data-bind-meta');
+          state.headerMeta[key] = target.textContent;
+          saveState();
+          return;
+        }
+
+        if (target.hasAttribute('data-bind-section') && target.hasAttribute('data-bind-field')) {
+          const sec = target.getAttribute('data-bind-section');
+          const field = target.getAttribute('data-bind-field');
+          if (state.sections[sec] && Object.prototype.hasOwnProperty.call(state.sections[sec], field)) {
+            state.sections[sec][field] = target.textContent;
+            saveState();
+          }
+          return;
+        }
+
+        if (target.hasAttribute('data-bind-bio')) {
+          const idx = Number(target.getAttribute('data-bind-bio'));
+          if (!Number.isNaN(idx) && state.biographyChapters[idx]) {
+            state.biographyChapters[idx].note = target.textContent;
+            saveState();
+          }
+          return;
+        }
+
+        if (target.hasAttribute('data-bind-lang')) {
+          const key = target.getAttribute('data-bind-lang');
+          if (Object.prototype.hasOwnProperty.call(state.languageRecord, key)) {
+            state.languageRecord[key] = target.textContent;
+            saveState();
+          }
+        }
+      });
+
+      // Sync Project Status Checkboxes
+      slideStage.addEventListener('change', (e) => {
+        const cb = e.target.closest('input[type="checkbox"][data-status-idx]');
+        if (!cb) return;
+        const idx = Number(cb.getAttribute('data-status-idx'));
+        if (!Number.isNaN(idx) && state.projectStatus[idx]) {
+          state.projectStatus[idx].done = cb.checked;
+          saveState();
+          renderSlide();
+        }
+      });
+
+      // Navigation Controls
+      slideNavContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-goto-slide]');
+        if (!btn) return;
+        goToSlide(Number(btn.getAttribute('data-goto-slide')));
+      });
+
+      prevSlideBtn.addEventListener('click', () => goToSlide(state.currentSlide - 1));
+      nextSlideBtn.addEventListener('click', () => goToSlide(state.currentSlide + 1));
+
+      // Keyboard arrow navigation when not editing text
+      document.addEventListener('keydown', (e) => {
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        const isEditable = document.activeElement && document.activeElement.isContentEditable;
+        if (isEditable || activeTag === 'input' || activeTag === 'textarea') return;
+
+        if (e.key === 'ArrowRight') {
+          goToSlide(state.currentSlide + 1);
+        } else if (e.key === 'ArrowLeft') {
+          goToSlide(state.currentSlide - 1);
+        }
+      });
+
+      // Export JSON Backup
+      exportJsonBtn.addEventListener('click', () => {
+        try {
+          const exportPayload = {
+            ...state,
+            portraits: state.portraits.map((p, idx) => (p ? `[Uploaded Image Slot ${idx + 1}]` : null)),
+          };
+          const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `character-record-greta-MC-7638.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast('ส่งออกไฟล์ข้อมูลตัวละคร กรีตา (#MC-7638) เรียบร้อยแล้ว');
+        } catch (err) {
+          showToast('ไม่สามารถส่งออกไฟล์ได้ในขณะนี้');
+        }
+      });
+
+      // Reset Modal Flow
+      resetDataBtn.addEventListener('click', () => {
+        resetModal.classList.remove('hidden');
+        resetModal.classList.add('flex');
+      });
+
+      cancelResetBtn.addEventListener('click', () => {
+        resetModal.classList.add('hidden');
+        resetModal.classList.remove('flex');
+      });
+
+      confirmResetBtn.addEventListener('click', () => {
+        state = deepClone(DEFAULT_STATE);
+        saveState();
+        resetModal.classList.add('hidden');
+        resetModal.classList.remove('flex');
+        renderSlide();
+        showToast('รีเซ็ตแฟ้มข้อมูลตัวละคร กรีตา (#MC-7638) กลับเป็นค่าเริ่มต้นแล้ว');
+      });
+
+      toastCloseBtn.addEventListener('click', () => {
+        toastBanner.classList.add('hidden');
+      });
+
+      // Initial Render
+      renderSlide();
+    })();
+  </script>
+</body>
+</html>
